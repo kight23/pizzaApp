@@ -1,11 +1,23 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {units} from '../../themes/Units';
 import {colors} from '../../themes/Colors';
 import IconTimes from '../../assets/svgs/times.svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const BasketCard = ({item}) => {
+  const [count, setCount] = useState(item.count);
+ 
+
+  const handleAddCount = () => {
+    setCount(count + 1);
+  };
+
+  const handleDecreaseCount = () => {
+    if (count > 1) {
+      setCount(count - 1);
+    }
+  };
   return (
     <View style={styles.container}>
       <Image
@@ -23,18 +35,21 @@ const BasketCard = ({item}) => {
         </View>
         <View style={styles.priceContainer}>
           <Text style={styles.price}>
-            {parseFloat(item.price).toFixed(2)} $
+          {(parseFloat(item.price) * count).toFixed(2)} $
           </Text>
+          
           <View style={styles.countContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleDecreaseCount}>
               <Icon
                 name="minus-circle-outline"
                 color={colors.ORANGE}
                 size={30}
               />
             </TouchableOpacity>
-            <Text style={styles.countText}>{item.count}</Text>
-            <TouchableOpacity>
+
+            <Text style={styles.countText}>{count}</Text>
+
+            <TouchableOpacity onPress={handleAddCount}>
               <Icon name="plus-circle" size={30} color={colors.ORANGE} />
             </TouchableOpacity>
           </View>
