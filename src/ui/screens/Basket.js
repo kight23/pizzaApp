@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import BasketCard from '../components/BasketCard';
 import {colors} from '../../themes/Colors';
 import {units} from '../../themes/Units';
@@ -26,7 +26,7 @@ const Basket = ({navigation}) => {
 
   //   const loading = false;
   //   const error= "";
-
+  const [basketSubTotal, setBasketSubTotal] = useState(0);
   const {
     data,
     loading,
@@ -45,7 +45,17 @@ const Basket = ({navigation}) => {
     console.log("datax",data);
   }, [isFocused]);
 
-  const renderBasketCard = ({item}) => <BasketCard item={item} />;
+  const renderBasketCard = ({item}) => <BasketCard item={item} onIncrease={handleIncreaseQuantity} subTotal={basketSubTotal} onDecrease={handleDecreaseQuantity} />; 
+
+  const handleIncreaseQuantity = (count, price) => {
+    const newSubTotal = count * price; // Tính lại giá trị của SubTotal khi số lượng sản phẩm được tăng
+    setBasketSubTotal(newSubTotal); // Cập nhật lại giá trị của SubTotal
+  };
+
+  const handleDecreaseQuantity = (count, price) => {  
+    setBasketSubTotal(price * count); // Cập nhật lại giá trị của SubTotal
+  };
+
 
   const onClickCheckout = () => {
     const basketParams = {
@@ -82,7 +92,7 @@ const Basket = ({navigation}) => {
       <View style={styles.bottomContainer}>
         <View style={styles.priceContainer}>
           <Text style={styles.priceTitle}>SubTotal:</Text>
-          <Text style={styles.priceText}>{subTotal} $</Text>
+          <Text style={styles.priceText}>{basketSubTotal} $</Text>
         </View>
         <View style={[styles.priceContainer, {marginTop: units.height / 81}]}>
           <Text style={styles.priceTitle}>Delivery:</Text>

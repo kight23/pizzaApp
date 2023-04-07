@@ -5,17 +5,20 @@ import {colors} from '../../themes/Colors';
 import IconTimes from '../../assets/svgs/times.svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const BasketCard = ({item}) => {
-  const [count, setCount] = useState(item.count);
- 
+const BasketCard = ({item, onIncrease, onDecrease}) => {
+  const [quantity, setQuantity] = useState(item.count);
+  const {name, price, image} = item;
 
-  const handleAddCount = () => {
-    setCount(count + 1);
+  const handleIncrease = () => {
+    const newQuantity = quantity + 1;
+    setQuantity(newQuantity);
+    onIncrease(newQuantity, price); // Gọi hàm được truyền từ component Basket để cập nhật lại giá trị của SubTotal
   };
 
-  const handleDecreaseCount = () => {
-    if (count > 1) {
-      setCount(count - 1);
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+      onDecrease(quantity - 1,price);
     }
   };
   return (
@@ -35,11 +38,11 @@ const BasketCard = ({item}) => {
         </View>
         <View style={styles.priceContainer}>
           <Text style={styles.price}>
-          {(parseFloat(item.price) * count).toFixed(2)} $
+          {(parseFloat(item.price) * quantity).toFixed(2)} $
           </Text>
           
           <View style={styles.countContainer}>
-            <TouchableOpacity onPress={handleDecreaseCount}>
+            <TouchableOpacity onPress={handleDecrease}>
               <Icon
                 name="minus-circle-outline"
                 color={colors.ORANGE}
@@ -47,9 +50,9 @@ const BasketCard = ({item}) => {
               />
             </TouchableOpacity>
 
-            <Text style={styles.countText}>{count}</Text>
+            <Text style={styles.countText}>{quantity}</Text>
 
-            <TouchableOpacity onPress={handleAddCount}>
+            <TouchableOpacity onPress={handleIncrease}>
               <Icon name="plus-circle" size={30} color={colors.ORANGE} />
             </TouchableOpacity>
           </View>
