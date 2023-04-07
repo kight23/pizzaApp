@@ -95,7 +95,7 @@ const Basket = ({navigation}) => {
       <View style={styles.bottomContainer}>
         <View style={styles.priceContainer}>
           <Text style={styles.priceTitle}>SubTotal:</Text>
-          <Text style={styles.priceText}>{basketSubTotal} $</Text>
+          <Text style={styles.priceText}>{parseFloat(basketSubTotal).toFixed(2)} $</Text>
         </View>
         <View style={[styles.priceContainer, {marginTop: units.height / 81}]}>
           <Text style={styles.priceTitle}>Delivery:</Text>
