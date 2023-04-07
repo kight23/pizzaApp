@@ -26,6 +26,7 @@ const Basket = ({navigation}) => {
 
   //   const loading = false;
   //   const error= "";
+  const [productList, setProductList] = useState([]);
   const [basketSubTotal, setBasketSubTotal] = useState(0);
   const {
     data,
@@ -37,6 +38,8 @@ const Basket = ({navigation}) => {
     deliveryPrice,
   } = basketApi();
   const isFocused = useIsFocused();
+
+  
 
   useEffect(() => {
     if (isFocused) {
@@ -100,7 +103,7 @@ const Basket = ({navigation}) => {
         </View>
         <View style={[styles.priceContainer, {marginTop: units.height / 81}]}>
           <Text style={styles.priceTitle}>Total:</Text>
-          <Text style={styles.priceText}>{totalPrice} $</Text>
+          <Text style={styles.priceText}>{parseFloat(basketSubTotal + deliveryPrice).toFixed(2)} $</Text>
         </View>
         <View style={styles.buttonContainer}>
           <CustomButton title="Checkout" onPress={onClickCheckout} />
