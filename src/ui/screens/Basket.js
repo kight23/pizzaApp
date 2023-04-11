@@ -20,12 +20,9 @@ import {useSelector} from 'react-redux';
 
 const Basket = ({navigation}) => {
 
-  // const basketFoods = useSelector(
-  //   selector => selector.user.basketFood,
-  // );
-
-  //   const loading = false;
-  //   const error= "";
+  const basketFoods = useSelector(
+    selector => selector.user.basketFood,
+  );
 
   const {
     data,
@@ -42,8 +39,11 @@ const Basket = ({navigation}) => {
     if (isFocused) {
       getBasketDataApi();
     }
-    console.log("datax",data);
   }, [isFocused]);
+
+  useEffect(() => {
+    getBasketDataApi();
+  }, [basketFoods]);
 
   const renderBasketCard = ({item}) => <BasketCard item={item} />;
 

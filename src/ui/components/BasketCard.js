@@ -3,14 +3,20 @@ import React, {useState, useEffect} from 'react';
 import {units} from '../../themes/Units';
 import {colors} from '../../themes/Colors';
 import IconTimes from '../../assets/svgs/times.svg';
+import basketApi from '../../services/api/basketApi';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const BasketCard = ({item}) => {
   const [count, setCount] = useState(item.count);
  
+  const {
+    removeFoodBasket,
+    increaseFoodCount,
+  } = basketApi();
 
   const handleAddCount = () => {
-    setCount(count + 1);
+    // setCount(count + 1);
+    increaseFoodCount(item.id);
   };
 
   const handleDecreaseCount = () => {
@@ -18,6 +24,9 @@ const BasketCard = ({item}) => {
       setCount(count - 1);
     }
   };
+  const handleRemoveFoodBasket = () => {
+    removeFoodBasket(item.id);
+  }
   return (
     <View style={styles.container}>
       <Image
@@ -29,7 +38,7 @@ const BasketCard = ({item}) => {
       <View style={styles.bodyContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{item.title}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleRemoveFoodBasket}>
             <IconTimes />
           </TouchableOpacity>
         </View>
