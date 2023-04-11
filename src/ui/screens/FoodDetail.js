@@ -24,7 +24,8 @@ import { foodData } from '../../database/FoodList';
 const radioButtonsData = [
   {
     id: '1',
-    label: 'Pepper  Julienned \t +2.3$',
+    label: 'Pepper Julienned \t +2.3$',
+    coin: 2.3,
     value: 'option1',
     color: colors.ORANGE,
     selected: true,
@@ -32,12 +33,14 @@ const radioButtonsData = [
   {
     id: '2',
     label: 'Baby Spinach \t +4.7$',
+    coin: 4.7,
     value: 'option2',
     color: colors.ORANGE,
   },
   {
     id: '3',
     label: 'Masroom \t +6.1$',
+    coin: 6.1,
     value: 'option3',
     color: colors.ORANGE,
   },
@@ -46,12 +49,13 @@ const radioButtonsData = [
 const FoodDetail = ({navigation, route}) => {
   const {id} = route.params;
   const [radioButtons, setRadioButtons] = useState(radioButtonsData);
+  const [selectedOptionCoin, setSelectedOptionCoin] = useState(radioButtons[0].coin);
   const [datas,setDatas] = useState(foodData.filter((item) => item.id === id));
   //const {data, loading, error} = FoodDetailApi(id);
   const loading = false;
   const error='';
   const data = datas[0];
-  // console.log('data', data);
+  // const dataRadio = dataRadioButton[0]
   // console.log('data.id', data.id);
   const [count, setCount] = useState(1);
   const [amount, setAmount] = useState();
@@ -63,25 +67,29 @@ const FoodDetail = ({navigation, route}) => {
     error: bagError,
     addBagProductApi,
   } = addBasketApi();
-
   const onClickBack = () => {
     navigation.goBack();
   };
-
+  const selectedItem = (data,id) => {
+  
+    const findItem = data.find((i)=>{
+      return i.id === id;
+    })
+    setSelectedOptionCoin(findItem.coin)
+  }
   useEffect(() => {
-    setAmount(count * data.price);
-  }, [count]);
-
+    setAmount(count * data.price + count * selectedOptionCoin );
+  }, [count,selectedOptionCoin]);
+  
   const hadnleAddCount = () => {
     setCount(count + 1);
   };
-
+  
   const handleDecreaseCount = () => {
     if (count > 1) {
       setCount(count - 1);
     }
   };
-
   const handleBasket = () => {
     const product = {
       id: data.id,
@@ -122,7 +130,7 @@ const FoodDetail = ({navigation, route}) => {
           <Text style={styles.title}>{data.title}</Text>
           <View style={styles.starContainer}>
             <Icon name="star" size={25} color={colors.YELLOW} />
-            <Text style={styles.rate}>{data?.rate} (30+)</Text>
+            <Text style={styles.rate}>{data?.rate} (40+)</Text>
           </View>
           <View style={styles.priceContainer}>
             <Text style={styles.price}>
@@ -145,6 +153,7 @@ const FoodDetail = ({navigation, route}) => {
           <Text style={styles.aboutText}>{data?.description}</Text>
           <Text style={styles.addElementText}>Choice of Add On</Text>
           <RadioGroup
+            onPress={selectedItem}
             radioButtons={radioButtons}
             color={colors.ORANGE}
             containerStyle={styles.radioContainer}
