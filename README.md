@@ -5,7 +5,7 @@
 ### Đồ án Mindx lớp TC-RN23
 ## Thành viên:
 - Nguyễn Anh Khoa - leader
-- Đỗ kiên Quyết
+- Nguyễn Đức Anh
 - Vũ Anh Quân
 
 ## Project Features
