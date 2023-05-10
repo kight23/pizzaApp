@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '../../hooks/useApi';
 import qs from 'qs';
 import { useSelector } from 'react-redux';
@@ -28,6 +28,10 @@ const basketApi = () => {
     }
   };
 
+  useEffect(() => {
+    calculateTotalPrice(basketFoods);
+  },[basketFoods])
+
   const calculateTotalPrice = basketData => {
     if (basketData.length != 0) {
       let total = 0;
@@ -43,6 +47,10 @@ const basketApi = () => {
       setTotalPrice(0);
     }
   };
+
+  useEffect(() => {
+    setTotalPrice((parseFloat(subTotal) + deliveryPrice).toFixed(2));
+  }, [subTotal, deliveryPrice]);
 
   return {
     data,

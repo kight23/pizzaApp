@@ -26,8 +26,9 @@ const Basket = ({navigation}) => {
 
   //   const loading = false;
   //   const error= "";
-  const [productList, setProductList] = useState([]);
+  const [productList, setProductList] = useState(0);
   const [basketSubTotal, setBasketSubTotal] = useState(0);
+  const [total, setTotal] = useState(0);
   const {
     data,
     loading,
@@ -48,6 +49,11 @@ const Basket = ({navigation}) => {
     console.log("datax",data);
   }, [isFocused]);
 
+  useEffect(() => {
+    // Calculate total when subtotal changes
+    setTotal(basketSubTotal + deliveryPrice);
+  }, [basketSubTotal]);
+
   const renderBasketCard = ({item}) => <BasketCard item={item} onIncrease={handleIncreaseQuantity} subTotal={basketSubTotal} onDecrease={handleDecreaseQuantity} />; 
 
   const handleIncreaseQuantity = (count, price) => {
@@ -58,6 +64,11 @@ const Basket = ({navigation}) => {
   const handleDecreaseQuantity = (count, price) => {  
     setBasketSubTotal(price * count); // Cập nhật lại giá trị của SubTotal
   };
+
+  // const handleRemove = (id) => {
+  //   const newItems = items.filter((item) => item.id !== id);
+  //   setItems(newItems);
+  // };
 
 
   const onClickCheckout = () => {

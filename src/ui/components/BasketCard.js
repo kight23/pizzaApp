@@ -4,6 +4,7 @@ import {units} from '../../themes/Units';
 import {colors} from '../../themes/Colors';
 import IconTimes from '../../assets/svgs/times.svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useDispatch } from 'react-redux';
 
 const BasketCard = ({item, onIncrease, onDecrease}) => {
   const [quantity, setQuantity] = useState(item.count);
@@ -20,7 +21,13 @@ const BasketCard = ({item, onIncrease, onDecrease}) => {
       setQuantity(quantity - 1);
       onDecrease(quantity - 1,price);
     }
+    
   };
+
+  // const handleRemove = () => {
+  //   onRemove(item.id);
+  // };
+  
   return (
     <View style={styles.container}>
       <Image
@@ -32,7 +39,7 @@ const BasketCard = ({item, onIncrease, onDecrease}) => {
       <View style={styles.bodyContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{item.title}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity> 
             <IconTimes />
           </TouchableOpacity>
         </View>
@@ -62,7 +69,7 @@ const BasketCard = ({item, onIncrease, onDecrease}) => {
   );
 };
 
-export default BasketCard;
+export default BasketCard
 
 const styles = StyleSheet.create({
   container: {
