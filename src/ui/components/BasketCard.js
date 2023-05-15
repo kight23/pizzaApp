@@ -5,28 +5,25 @@ import {colors} from '../../themes/Colors';
 import IconTimes from '../../assets/svgs/times.svg';
 import basketApi from '../../services/api/basketApi';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useDispatch } from 'react-redux';
 
-const BasketCard = ({item}) => {
-  const [count, setCount] = useState(item.count);
- 
-  const {
-    removeFoodBasket,
-    increaseFoodCount,
-  } = basketApi();
+const BasketCard = ({item, onIncrease, onDecrease}) => {
+  const [quantity, setQuantity] = useState(item.count);
+  const {name, price, image} = item;
 
-  const handleAddCount = () => {
-    // setCount(count + 1);
-    increaseFoodCount(item.id);
+  const handleIncrease = () => {
+    const newQuantity = quantity + 1;
+    setQuantity(newQuantity);
+    onIncrease(newQuantity, price); // Gọi hàm được truyền từ component Basket để cập nhật lại giá trị của SubTotal
   };
 
-  const handleDecreaseCount = () => {
-    if (count > 1) {
-      setCount(count - 1);
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+      onDecrease(quantity - 1,price);
     }
+    
   };
-  const handleRemoveFoodBasket = () => {
-    removeFoodBasket(item.id);
-  }
   return (
     <View style={styles.container}>
       <Image
@@ -38,17 +35,17 @@ const BasketCard = ({item}) => {
       <View style={styles.bodyContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{item.title}</Text>
-          <TouchableOpacity onPress={handleRemoveFoodBasket}>
+          <TouchableOpacity>
             <IconTimes />
           </TouchableOpacity>
         </View>
         <View style={styles.priceContainer}>
           <Text style={styles.price}>
-          {(parseFloat(item.price) * count).toFixed(2)} $
+          {(parseFloat(item.price) * quantity).toFixed(2)} $
           </Text>
           
           <View style={styles.countContainer}>
-            <TouchableOpacity onPress={handleDecreaseCount}>
+            <TouchableOpacity onPress={handleDecrease}>
               <Icon
                 name="minus-circle-outline"
                 color={colors.ORANGE}
@@ -56,9 +53,9 @@ const BasketCard = ({item}) => {
               />
             </TouchableOpacity>
 
-            <Text style={styles.countText}>{count}</Text>
+            <Text style={styles.countText}>{quantity}</Text>
 
-            <TouchableOpacity onPress={handleAddCount}>
+            <TouchableOpacity onPress={handleIncrease}>
               <Icon name="plus-circle" size={30} color={colors.ORANGE} />
             </TouchableOpacity>
           </View>
@@ -68,7 +65,7 @@ const BasketCard = ({item}) => {
   );
 };
 
-export default BasketCard;
+export default BasketCard
 
 const styles = StyleSheet.create({
   container: {

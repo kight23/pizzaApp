@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import BasketCard from '../components/BasketCard';
 import {colors} from '../../themes/Colors';
 import {units} from '../../themes/Units';
@@ -20,10 +20,15 @@ import {useSelector} from 'react-redux';
 
 const Basket = ({navigation}) => {
 
-  const basketFoods = useSelector(
-    selector => selector.user.basketFood,
-  );
+  // const basketFoods = useSelector(
+  //   selector => selector.user.basketFood,
+  // );
 
+  //   const loading = false;
+  //   const error= "";
+  const [productList, setProductList] = useState(0);
+  const [basketSubTotal, setBasketSubTotal] = useState(0);
+  const [total, setTotal] = useState(0);
   const {
     data,
     loading,
@@ -35,6 +40,8 @@ const Basket = ({navigation}) => {
   } = basketApi();
   const isFocused = useIsFocused();
 
+  
+
   useEffect(() => {
     if (isFocused) {
       getBasketDataApi();
@@ -45,7 +52,27 @@ const Basket = ({navigation}) => {
     getBasketDataApi();
   }, [basketFoods]);
 
-  const renderBasketCard = ({item}) => <BasketCard item={item} />;
+  useEffect(() => {
+    // Calculate total when subtotal changes
+    setTotal(basketSubTotal + deliveryPrice);
+  }, [basketSubTotal]);
+
+  const renderBasketCard = ({item}) => <BasketCard item={item} onIncrease={handleIncreaseQuantity} subTotal={basketSubTotal} onDecrease={handleDecreaseQuantity} />; 
+
+  const handleIncreaseQuantity = (count, price) => {
+    const newSubTotal = count * price; // Tính lại giá trị của SubTotal khi số lượng sản phẩm được tăng
+    setBasketSubTotal(newSubTotal); // Cập nhật lại giá trị của SubTotal
+  };
+
+  const handleDecreaseQuantity = (count, price) => {  
+    setBasketSubTotal(price * count); // Cập nhật lại giá trị của SubTotal
+  };
+
+  // const handleRemove = (id) => {
+  //   const newItems = items.filter((item) => item.id !== id);
+  //   setItems(newItems);
+  // };
+
 
   const onClickCheckout = () => {
     const basketParams = {
@@ -82,7 +109,7 @@ const Basket = ({navigation}) => {
       <View style={styles.bottomContainer}>
         <View style={styles.priceContainer}>
           <Text style={styles.priceTitle}>SubTotal:</Text>
-          <Text style={styles.priceText}>{subTotal} $</Text>
+          <Text style={styles.priceText}>{parseFloat(basketSubTotal).toFixed(2)} $</Text>
         </View>
         <View style={[styles.priceContainer, {marginTop: units.height / 81}]}>
           <Text style={styles.priceTitle}>Delivery:</Text>
@@ -90,7 +117,7 @@ const Basket = ({navigation}) => {
         </View>
         <View style={[styles.priceContainer, {marginTop: units.height / 81}]}>
           <Text style={styles.priceTitle}>Total:</Text>
-          <Text style={styles.priceText}>{totalPrice} $</Text>
+          <Text style={styles.priceText}>{parseFloat(basketSubTotal + deliveryPrice).toFixed(2)} $</Text>
         </View>
         <View style={styles.buttonContainer}>
           <CustomButton title="Checkout" onPress={onClickCheckout} />

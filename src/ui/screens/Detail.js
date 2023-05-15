@@ -24,6 +24,7 @@ const radioButtonsData = [
   {
     id: '1',
     label: 'Pepper  Julienned \t +2.3$',
+   
     value: 'option1',
     color: colors.ORANGE,
     selected: true,
@@ -31,12 +32,14 @@ const radioButtonsData = [
   {
     id: '2',
     label: 'Baby Spinach \t +4.7$',
+    
     value: 'option2',
     color: colors.ORANGE,
   },
   {
     id: '3',
     label: 'Masroom \t +6.1$',
+   
     value: 'option3',
     color: colors.ORANGE,
   },
@@ -48,7 +51,6 @@ const Detail = ({navigation, route}) => {
   const [count, setCount] = useState(1);
   const [amount, setAmount] = useState();
   const dispatch = useDispatch();
-
   const {
     data: bagResponse,
     loading: bagLoading,
@@ -64,7 +66,7 @@ const Detail = ({navigation, route}) => {
     setAmount(count * data.price);
   }, [count]);
 
-  const hadnleAddCount = () => {
+  const handleAddCount = () => {
     setCount(count + 1);
   };
 
@@ -128,7 +130,7 @@ const Detail = ({navigation, route}) => {
                 />
               </TouchableOpacity>
               <Text style={styles.countText}>{count}</Text>
-              <TouchableOpacity onPress={hadnleAddCount}>
+              <TouchableOpacity onPress={handleAddCount}>
                 <Icon name="plus-circle" size={30} color={colors.ORANGE} />
               </TouchableOpacity>
             </View>
@@ -140,6 +142,7 @@ const Detail = ({navigation, route}) => {
             color={colors.ORANGE}
             containerStyle={styles.radioContainer}
           />
+         
           <TouchableOpacity
             style={styles.buttonContainer}
             onPress={handleBasket}>
