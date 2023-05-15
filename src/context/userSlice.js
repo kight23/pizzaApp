@@ -40,8 +40,9 @@ export const userSlicer = createSlice({
     addBasket: (state, action) => {
       const { product } = action.payload;
       // state.basketFood = basketFoods;
-      // console.log('state', state);
+      console.log('state', state);
       const find = state.basketFood.find(item => item.id === product.id);
+      console.log('find', find);
       if (!find) {
         const newList = [...state.basketFood, product];
         state.basketFood = newList;
@@ -62,10 +63,11 @@ export const userSlicer = createSlice({
       const filterList = state.basketFood.filter(item => item.id !== id);
       state.basketFood = filterList;
     },
+
     getBasket: (state, action) => {
       const { food } = action.payload;
       // state.basketFood = basketFoods;
-      console.log('basketFood', state);
+      // console.log('basketFood', state);
       const find = state.basketFood.find(item => item.user === food.user);
       if (!find) {
         //state.basketFood = find;
@@ -83,7 +85,7 @@ export const userSlicer = createSlice({
     clearBasket: (state, action) => {
       const { user } = action.payload;
       // state.basketFood = basketFoods;
-      console.log('clear', state);
+      // console.log('clear', state);
       const newList = state.basketFood.filter(item => item.user === user.user);
       state.basketFood = newList;
       showMessage({
@@ -91,10 +93,26 @@ export const userSlicer = createSlice({
         type: 'success',
       });
     },
+    increaseFoodBasket: (state, action) => {
+      // const { id, user } = action.payload;
+      // console.log('id', id);
+      // console.log('user', user);
+      // const filterList = state.basketFood.filter(item => item.user === user).map((el) => {
+      //   return el.id;
+      //   // if (el.id === id) {
+        //   console.log('el', el);
+        //   return [...el, el.count = 1];
+        // }
+        // else
+        //   return [...el];
+      // });
+      // console.log('el', filterList);
+      //state.basketFood = filterList;
+    },
   },
 });
 
-export const { loginAccount, logOutAccount, addFavorites, removeFavorites, addBasket, removeBasket, getBasket, clearBasket } =
+export const { loginAccount, logOutAccount, addFavorites, removeFavorites, addBasket, removeBasket, getBasket, clearBasket, increaseFoodBasket } =
   userSlicer.actions;
 
 export default userSlicer.reducer;

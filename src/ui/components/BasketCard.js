@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {units} from '../../themes/Units';
 import {colors} from '../../themes/Colors';
 import IconTimes from '../../assets/svgs/times.svg';
+import basketApi from '../../services/api/basketApi';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDispatch } from 'react-redux';
 
@@ -23,11 +24,6 @@ const BasketCard = ({item, onIncrease, onDecrease}) => {
     }
     
   };
-
-  // const handleRemove = () => {
-  //   onRemove(item.id);
-  // };
-  
   return (
     <View style={styles.container}>
       <Image
@@ -39,7 +35,7 @@ const BasketCard = ({item, onIncrease, onDecrease}) => {
       <View style={styles.bodyContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{item.title}</Text>
-          <TouchableOpacity> 
+          <TouchableOpacity>
             <IconTimes />
           </TouchableOpacity>
         </View>

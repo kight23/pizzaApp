@@ -17,7 +17,7 @@ import {removeFavorites} from '../../context/userSlice';
 const FavoritesScreenCard = ({item}) => {
   const dispatch = useDispatch();
 
-  const removeRestaurantFavorites = () => {
+  const handleRemoveFavorites = () => {
     dispatch(removeFavorites({id: item.id}));
   };
 
@@ -46,7 +46,7 @@ const FavoritesScreenCard = ({item}) => {
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.textBody}>{item.category}</Text>
           </View>
-          <TouchableOpacity onPress={removeRestaurantFavorites}>
+          <TouchableOpacity onPress={handleRemoveFavorites}>
             <Icon
               name="delete-circle-outline"
               size={30}

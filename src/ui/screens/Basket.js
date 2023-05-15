@@ -46,8 +46,11 @@ const Basket = ({navigation}) => {
     if (isFocused) {
       getBasketDataApi();
     }
-    console.log("datax",data);
   }, [isFocused]);
+
+  useEffect(() => {
+    getBasketDataApi();
+  }, [basketFoods]);
 
   useEffect(() => {
     // Calculate total when subtotal changes
